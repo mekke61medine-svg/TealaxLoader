@@ -1,9 +1,8 @@
 local TealaxLoader = {}
-local loaderClosed = false -- Loader'ın kapalı olup olmadığını takip etmek için
+local loaderClosed = false
 
--- Loader'ı sürekli canlı tutacak sistem
 local function createLoader()
-    if loaderClosed then return nil end -- Eğer kapatıldıysa yeni loader oluşturma
+    if loaderClosed then return nil end
 
     -- Önceki loader'ı temizle
     local existingGui = game:GetService("CoreGui"):FindFirstChild("TealaxLoader")
@@ -16,6 +15,7 @@ local function createLoader()
     screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     screenGui.ResetOnSpawn = false
 
+    -- Ana çerçeve
     local mainFrame = Instance.new("Frame")
     mainFrame.Size = UDim2.new(0, 400, 0, 500)
     mainFrame.Position = UDim2.new(0.5, -200, 0.5, -250)
@@ -24,6 +24,7 @@ local function createLoader()
     mainFrame.BorderSizePixel = 0
     mainFrame.Parent = screenGui
 
+    -- Köşe yuvarlama
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 8)
     corner.Parent = mainFrame
@@ -36,6 +37,7 @@ local function createLoader()
     titleBar.BorderSizePixel = 0
     titleBar.Parent = mainFrame
 
+    -- Başlık metni
     local title = Instance.new("TextLabel")
     title.Size = UDim2.new(1, -60, 1, 0)
     title.Position = UDim2.new(0, 10, 0, 0)
@@ -47,7 +49,7 @@ local function createLoader()
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = titleBar
 
-    -- Pencere kontrol butonları
+    -- Minimize butonu
     local minimizeButton = Instance.new("TextButton")
     minimizeButton.Size = UDim2.new(0, 30, 0, 30)
     minimizeButton.Position = UDim2.new(1, -60, 0, 0)
@@ -59,6 +61,7 @@ local function createLoader()
     minimizeButton.Font = Enum.Font.GothamBold
     minimizeButton.Parent = titleBar
 
+    -- Kapatma butonu
     local closeButton = Instance.new("TextButton")
     closeButton.Size = UDim2.new(0, 30, 0, 30)
     closeButton.Position = UDim2.new(1, -30, 0, 0)
@@ -70,7 +73,7 @@ local function createLoader()
     closeButton.Font = Enum.Font.GothamBold
     closeButton.Parent = titleBar
 
-    -- Script listesi için kaydırma çerçevesi
+    -- ScrollingFrame (Script listesi için)
     local scrollFrame = Instance.new("ScrollingFrame")
     scrollFrame.Size = UDim2.new(1, -20, 1, -70)
     scrollFrame.Position = UDim2.new(0, 10, 0, 40)
@@ -80,11 +83,12 @@ local function createLoader()
     scrollFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
     scrollFrame.Parent = mainFrame
 
+    -- UIListLayout (Script butonlarını düzenlemek için)
     local uiListLayout = Instance.new("UIListLayout")
     uiListLayout.Padding = UDim.new(0, 5)
     uiListLayout.Parent = scrollFrame
 
-    -- Durum bilgisi
+    -- Durum metni
     local statusLabel = Instance.new("TextLabel")
     statusLabel.Size = UDim2.new(1, -20, 0, 20)
     statusLabel.Position = UDim2.new(0, 10, 1, -25)
@@ -98,42 +102,45 @@ local function createLoader()
 
     -- Script listesi
     local scripts = {
-        {"Nameless Admin", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))()'},
-        {"The Strongle Battlegrounds", "loadstring(game:HttpGet('https://raw.githubusercontent.com/BaconBossScript/TSB/main/TSB'))()"},
-        {"Soluna GUI", "loadstring(game:HttpGet('https://soluna-script.vercel.app/main.lua', true))()"},
-        {"Murder Mystery 2 (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/murder-mystery-2.lua', true))()"},
-        {"Murder Mystery 2 (XHub)", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CycleScripts/Official/refs/heads/main/freemium'))()"},
-        {"Brookhaven RP (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/brookhaven.lua', true))()"},
-        {"Big Paintball 2 (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/big-paintball-2.lua', true))()"},
-        {"Murderers vs Sheriffs Duels (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/murderers-vs-sheriffs-duels.lua', true))()"},
-        {"Bladeball (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/bladeball.lua', true))()"},
-        {"Flee the Facility (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/flee-the-facility.lua', true))()"}
+        {"Nameless Admin", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))()'},
+        {"The Strongle Battlegrounds", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/BaconBossScript/TSB/main/TSB"))()'},
+        {"Soluna GUI", 'loadstring(game:HttpGet("https://soluna-script.vercel.app/main.lua"))()'},
+        {"Murder Mystery 2 (Soluna)", 'loadstring(game:HttpGet("https://soluna-script.vercel.app/murder-mystery-2.lua"))()'},
+        {"Murder Mystery 2 (XHub)", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/CycleScripts/Official/refs/heads/main/freemium"))()'},
+        {"Brookhaven RP (Soluna)", 'loadstring(game:HttpGet("https://soluna-script.vercel.app/brookhaven.lua"))()'},
+        {"Big Paintball 2 (Soluna)", 'loadstring(game:HttpGet("https://soluna-script.vercel.app/big-paintball-2.lua"))()'},
+        {"Murderers vs Sheriffs Duels (Soluna)", 'loadstring(game:HttpGet("https://soluna-script.vercel.app/murderers-vs-sheriffs-duels.lua"))()'},
+        {"Bladeball (Soluna)", 'loadstring(game:HttpGet("https://soluna-script.vercel.app/bladeball.lua"))()'},
+        {"Flee the Facility (Soluna)", 'loadstring(game:HttpGet("https://soluna-script.vercel.app/flee-the-facility.lua"))()'}
     }
 
     -- Script butonlarını oluştur
-    for i, scriptData in ipairs(scripts) do
+    for _, scriptData in ipairs(scripts) do
         local name, code = scriptData[1], scriptData[2]
-        local frame = Instance.new("Frame")
-        frame.Size = UDim2.new(1, 0, 0, 40)
-        frame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
-        frame.BorderSizePixel = 0
-        frame.Parent = scrollFrame
+        local scriptFrame = Instance.new("Frame")
+        scriptFrame.Size = UDim2.new(1, 0, 0, 40)
+        scriptFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+        scriptFrame.BorderSizePixel = 0
+        scriptFrame.Parent = scrollFrame
 
+        -- Köşe yuvarlama
         local frameCorner = Instance.new("UICorner")
         frameCorner.CornerRadius = UDim.new(0, 5)
-        frameCorner.Parent = frame
+        frameCorner.Parent = scriptFrame
 
-        local label = Instance.new("TextLabel")
-        label.Size = UDim2.new(0.7, -10, 1, 0)
-        label.Position = UDim2.new(0, 10, 0, 0)
-        label.BackgroundTransparency = 1
-        label.Text = name
-        label.TextColor3 = Color3.fromRGB(255, 255, 255)
-        label.TextSize = 14
-        label.TextXAlignment = Enum.TextXAlignment.Left
-        label.Font = Enum.Font.Gotham
-        label.Parent = frame
+        -- Script ismi
+        local scriptName = Instance.new("TextLabel")
+        scriptName.Size = UDim2.new(0.7, -10, 1, 0)
+        scriptName.Position = UDim2.new(0, 10, 0, 0)
+        scriptName.BackgroundTransparency = 1
+        scriptName.Text = name
+        scriptName.TextColor3 = Color3.fromRGB(255, 255, 255)
+        scriptName.TextSize = 14
+        scriptName.TextXAlignment = Enum.TextXAlignment.Left
+        scriptName.Font = Enum.Font.Gotham
+        scriptName.Parent = scriptFrame
 
+        -- Çalıştır butonu
         local executeButton = Instance.new("TextButton")
         executeButton.Size = UDim2.new(0.3, -10, 0, 30)
         executeButton.Position = UDim2.new(0.7, 5, 0.5, -15)
@@ -143,18 +150,17 @@ local function createLoader()
         executeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
         executeButton.TextSize = 12
         executeButton.Font = Enum.Font.GothamBold
-        executeButton.Parent = frame
+        executeButton.Parent = scriptFrame
 
+        -- Köşe yuvarlama
         local buttonCorner = Instance.new("UICorner")
         buttonCorner.CornerRadius = UDim.new(0, 5)
         buttonCorner.Parent = executeButton
 
+        -- Butona tıklandığında scripti çalıştır
         executeButton.MouseButton1Click:Connect(function()
-            -- Butonu devre dışı bırak ve "ÇALIŞTI" yaz
-            executeButton.Text = "ÇALIŞTI"
+            executeButton.Text = "YÜKLENİYOR..."
             executeButton.BackgroundColor3 = Color3.fromRGB(80, 120, 200)
-            executeButton.AutoButtonColor = false
-            executeButton.Active = false
 
             -- Scripti çalıştır
             local success, err = pcall(function()
@@ -164,27 +170,23 @@ local function createLoader()
             if not success then
                 executeButton.Text = "HATA"
                 executeButton.BackgroundColor3 = Color3.fromRGB(200, 80, 80)
-                warn("Script yüklenirken hata: " .. name .. " - " .. err)
+                warn("Script yüklenirken hata: " .. err)
+            else
+                executeButton.Text = "YÜKLENDİ"
+                executeButton.BackgroundColor3 = Color3.fromRGB(80, 180, 80)
             end
 
-            -- 2.5 saniye bekle ve butonu eski haline getir
-            task.wait(2.5)
+            task.wait(2)
             executeButton.Text = "ÇALIŞTIR"
             executeButton.BackgroundColor3 = Color3.fromRGB(60, 180, 80)
-            executeButton.AutoButtonColor = true
-            executeButton.Active = true
         end)
     end
 
-    -- Pencere kontrol işlevleri
-    local dragging = false
-    local dragInput, dragStart, startPos
-
-    local function updateInput(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local delta = input.Position - dragStart
-            mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        end
+    -- Pencere sürükleme işlevi
+    local dragging, dragInput, dragStart, startPos
+    local function update(input)
+        local delta = input.Position - dragStart
+        mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
     end
 
     titleBar.InputBegan:Connect(function(input)
@@ -192,51 +194,38 @@ local function createLoader()
             dragging = true
             dragStart = input.Position
             startPos = mainFrame.Position
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
         end
     end)
 
-    titleBar.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            dragInput = input
+    titleBar.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
         end
     end)
 
     game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            updateInput(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            update(input)
         end
     end)
 
+    -- Minimize butonu
     minimizeButton.MouseButton1Click:Connect(function()
         scrollFrame.Visible = not scrollFrame.Visible
         statusLabel.Visible = not statusLabel.Visible
-        if scrollFrame.Visible then
-            mainFrame.Size = UDim2.new(0, 400, 0, 500)
-        else
-            mainFrame.Size = UDim2.new(0, 400, 0, 40)
-        end
+        mainFrame.Size = scrollFrame.Visible and UDim2.new(0, 400, 0, 500) or UDim2.new(0, 400, 0, 40)
     end)
 
-    -- X butonuna basınca tamamen kapat
+    -- Kapatma butonu
     closeButton.MouseButton1Click:Connect(function()
         loaderClosed = true
         screenGui:Destroy()
     end)
 
-    -- Klavye kısayolları (NumLock)
-    local uis = game:GetService("UserInputService")
-    local isVisible = true
-    uis.InputBegan:Connect(function(input, processed)
-        if processed then return end
-        -- NumLock tuşu ile açma/kapama
-        if input.KeyCode == Enum.KeyCode.NumLock then
-            isVisible = not isVisible
-            mainFrame.Visible = isVisible
+    -- NumLock ile aç/kapa
+    game:GetService("UserInputService").InputBegan:Connect(function(input, processed)
+        if not processed and input.KeyCode == Enum.KeyCode.NumLock then
+            mainFrame.Visible = not mainFrame.Visible
         end
     end)
 
@@ -246,26 +235,20 @@ end
 -- Loader'ı oluştur
 local loaderGui = createLoader()
 
--- Reset/ölüm koruma sistemi
-local player = game:GetService("Players").LocalPlayer
-player.CharacterAdded:Connect(function()
-    -- Karakter değiştiğinde loader'ı kontrol et ve yeniden oluştur
-    if not loaderClosed then
-        task.wait(1) -- Bekleme süresi
-        if not loaderGui or not loaderGui.Parent then
-            loaderGui = createLoader()
-        end
+-- Karakter değiştirdiğinde loader'ı yeniden oluştur
+game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
+    if not loaderClosed and (not loaderGui or not loaderGui.Parent) then
+        loaderGui = createLoader()
     end
 end)
 
--- Sürekli kontrol mekanizması
+-- Sürekli kontrol
 task.spawn(function()
     while task.wait(5) do
-        -- Her 5 saniyede bir loader'ın hala var olduğundan emin ol
         if not loaderClosed and (not loaderGui or not loaderGui.Parent) then
             loaderGui = createLoader()
         end
     end
-end)
+end
 
 return TealaxLoader
