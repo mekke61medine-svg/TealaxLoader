@@ -4,13 +4,11 @@ local loaderClosed = false -- Loader'ın kapalı olup olmadığını takip etmek
 -- Loader'ı sürekli canlı tutacak sistem
 local function createLoader()
     if loaderClosed then return nil end -- Eğer kapatıldıysa yeni loader oluşturma
-    
+
     -- Önceki loader'ı temizle
     local existingGui = game:GetService("CoreGui"):FindFirstChild("TealaxLoader")
-    if existingGui then
-        existingGui:Destroy()
-    end
-    
+    if existingGui then existingGui:Destroy() end
+
     -- Yeni GUI oluştur
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "TealaxLoader"
@@ -115,17 +113,16 @@ local function createLoader()
     -- Script butonlarını oluştur
     for i, scriptData in ipairs(scripts) do
         local name, code = scriptData[1], scriptData[2]
-        
         local frame = Instance.new("Frame")
         frame.Size = UDim2.new(1, 0, 0, 40)
         frame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
         frame.BorderSizePixel = 0
         frame.Parent = scrollFrame
-        
+
         local frameCorner = Instance.new("UICorner")
         frameCorner.CornerRadius = UDim.new(0, 5)
         frameCorner.Parent = frame
-        
+
         local label = Instance.new("TextLabel")
         label.Size = UDim2.new(0.7, -10, 1, 0)
         label.Position = UDim2.new(0, 10, 0, 0)
@@ -136,7 +133,7 @@ local function createLoader()
         label.TextXAlignment = Enum.TextXAlignment.Left
         label.Font = Enum.Font.Gotham
         label.Parent = frame
-        
+
         local executeButton = Instance.new("TextButton")
         executeButton.Size = UDim2.new(0.3, -10, 0, 30)
         executeButton.Position = UDim2.new(0.7, 5, 0.5, -15)
@@ -147,27 +144,30 @@ local function createLoader()
         executeButton.TextSize = 12
         executeButton.Font = Enum.Font.GothamBold
         executeButton.Parent = frame
-        
+
         local buttonCorner = Instance.new("UICorner")
         buttonCorner.CornerRadius = UDim.new(0, 5)
         buttonCorner.Parent = executeButton
-        
+
         executeButton.MouseButton1Click:Connect(function()
+            -- Butonu devre dışı bırak ve "ÇALIŞTI" yaz
             executeButton.Text = "ÇALIŞTI"
             executeButton.BackgroundColor3 = Color3.fromRGB(80, 120, 200)
             executeButton.AutoButtonColor = false
             executeButton.Active = false
-            
+
+            -- Scripti çalıştır
             local success, err = pcall(function()
                 loadstring(code)()
             end)
-            
+
             if not success then
                 executeButton.Text = "HATA"
                 executeButton.BackgroundColor3 = Color3.fromRGB(200, 80, 80)
                 warn("Script yüklenirken hata: " .. name .. " - " .. err)
             end
-            
+
+            -- 2.5 saniye bekle ve butonu eski haline getir
             task.wait(2.5)
             executeButton.Text = "ÇALIŞTIR"
             executeButton.BackgroundColor3 = Color3.fromRGB(60, 180, 80)
@@ -222,16 +222,18 @@ local function createLoader()
         end
     end)
 
+    -- X butonuna basınca tamamen kapat
     closeButton.MouseButton1Click:Connect(function()
         loaderClosed = true
         screenGui:Destroy()
     end)
 
+    -- Klavye kısayolları (NumLock)
     local uis = game:GetService("UserInputService")
     local isVisible = true
-
     uis.InputBegan:Connect(function(input, processed)
         if processed then return end
+        -- NumLock tuşu ile açma/kapama
         if input.KeyCode == Enum.KeyCode.NumLock then
             isVisible = not isVisible
             mainFrame.Visible = isVisible
@@ -246,18 +248,20 @@ local loaderGui = createLoader()
 
 -- Reset/ölüm koruma sistemi
 local player = game:GetService("Players").LocalPlayer
-
 player.CharacterAdded:Connect(function()
+    -- Karakter değiştiğinde loader'ı kontrol et ve yeniden oluştur
     if not loaderClosed then
-        task.wait(1)
+        task.wait(1) -- Bekleme süresi
         if not loaderGui or not loaderGui.Parent then
             loaderGui = createLoader()
         end
     end
 end)
 
+-- Sürekli kontrol mekanizması
 task.spawn(function()
     while task.wait(5) do
+        -- Her 5 saniyede bir loader'ın hala var olduğundan emin ol
         if not loaderClosed and (not loaderGui or not loaderGui.Parent) then
             loaderGui = createLoader()
         end
