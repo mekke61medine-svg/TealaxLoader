@@ -5,10 +5,11 @@ local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "TealaxLoader"
 screenGui.Parent = game:GetService("CoreGui")
 screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+screenGui.ResetOnSpawn = false -- Bu satır önemli: reset'te kapanmasın
 
 local mainFrame = Instance.new("Frame")
 mainFrame.Size = UDim2.new(0, 400, 0, 500)
-mainFrame.Position = UDim2.new(0.5, -200, 0.5, -250)
+mainGui.Position = UDim2.new(0.5, -200, 0.5, -250)
 mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 mainFrame.BorderSizePixel = 0
