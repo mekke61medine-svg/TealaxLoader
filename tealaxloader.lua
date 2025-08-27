@@ -24,36 +24,48 @@ local function createLoader()
     mainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
     mainFrame.Parent = screenGui
 
-    -- Köşe yuvarlama (ana çerçeve)
+    -- Köşe yuvarlatma (ana çerçeve)
     local mainCorner = Instance.new("UICorner")
     mainCorner.CornerRadius = UDim.new(0, 8)
     mainCorner.Parent = mainFrame
 
     -- Başlık çubuğu
     local titleBar = Instance.new("Frame")
-    titleBar.Size = UDim2.new(1, 0, 0, 30)
+    titleBar.Size = UDim2.new(1, 0, 0, 40)
     titleBar.Position = UDim2.new(0, 0, 0, 0)
-    titleBar.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+    titleBar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     titleBar.BorderSizePixel = 0
     titleBar.Parent = mainFrame
 
     -- Başlık metni
     local title = Instance.new("TextLabel")
     title.Size = UDim2.new(1, -60, 1, 0)
-    title.Position = UDim2.new(0, 10, 0, 0)
+    title.Position = UDim2.new(0, 30, 0, 0)
     title.BackgroundTransparency = 1
-    title.Text = "TEALAX SCRIPT LOADER | Num Lock Aç/Kapat"
+    title.Text = "TEALAX SCRIPT LOADER"
     title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    title.TextSize = 14
+    title.TextSize = 18
     title.Font = Enum.Font.GothamBold
-    title.TextXAlignment = Enum.TextXAlignment.Left
+    title.TextXAlignment = Enum.TextXAlignment.Center
     title.Parent = titleBar
+
+    -- Minimize butonu
+    local minimizeButton = Instance.new("TextButton")
+    minimizeButton.Size = UDim2.new(0, 30, 0, 30)
+    minimizeButton.Position = UDim2.new(1, -60, 0, 5)
+    minimizeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    minimizeButton.BorderSizePixel = 0
+    minimizeButton.Text = "_"
+    minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    minimizeButton.TextSize = 16
+    minimizeButton.Font = Enum.Font.GothamBold
+    minimizeButton.Parent = titleBar
 
     -- Kapatma butonu
     local closeButton = Instance.new("TextButton")
     closeButton.Size = UDim2.new(0, 30, 0, 30)
-    closeButton.Position = UDim2.new(1, -30, 0, 0)
-    closeButton.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+    closeButton.Position = UDim2.new(1, -30, 0, 5)
+    closeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     closeButton.BorderSizePixel = 0
     closeButton.Text = "X"
     closeButton.TextColor3 = Color3.fromRGB(255, 100, 100)
@@ -61,13 +73,22 @@ local function createLoader()
     closeButton.Font = Enum.Font.GothamBold
     closeButton.Parent = titleBar
 
-    -- ScrollingFrame (Script listesi için)
+    -- ALTTA EK SİYAH ALAN
+    local bottomBlackArea = Instance.new("Frame")
+    bottomBlackArea.Size = UDim2.new(1, 0, 0, 20)
+    bottomBlackArea.Position = UDim2.new(0, 0, 1, -20)
+    bottomBlackArea.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    bottomBlackArea.BorderSizePixel = 0
+    bottomBlackArea.Parent = mainFrame
+
+    -- ScrollingFrame (Script listesi için) - GENİŞLETİLDİ
     local scrollFrame = Instance.new("ScrollingFrame")
-    scrollFrame.Size = UDim2.new(1, -20, 1, -50)
-    scrollFrame.Position = UDim2.new(0, 10, 0, 40)
+    scrollFrame.Size = UDim2.new(1, -25, 1, -70) -- DAHA GENİŞ (25 yerine 20)
+    scrollFrame.Position = UDim2.new(0, 10, 0, 50)
     scrollFrame.BackgroundTransparency = 1
     scrollFrame.BorderSizePixel = 0
-    scrollFrame.ScrollBarThickness = 5
+    scrollFrame.ScrollBarThickness = 6 -- KALINLIK ARTTIRILDI
+    scrollFrame.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 120) -- SCROLLBAR RENGİ
     scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
     scrollFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
     scrollFrame.Parent = mainFrame
@@ -79,15 +100,15 @@ local function createLoader()
 
     -- Durum metni
     local statusLabel = Instance.new("TextLabel")
-    statusLabel.Size = UDim2.new(1, -20, 0, 20)
-    statusLabel.Position = UDim2.new(0, 10, 1, -25)
-    statusLabel.AnchorPoint = Vector2.new(0, 1)
+    statusLabel.Size = UDim2.new(1, 0, 1, 0)
+    statusLabel.Position = UDim2.new(0, 0, 0, 0)
     statusLabel.BackgroundTransparency = 1
-    statusLabel.Text = ""
+    statusLabel.Text = "Num Lock: Aç/Kapa"
     statusLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
     statusLabel.TextSize = 12
     statusLabel.Font = Enum.Font.Gotham
-    statusLabel.Parent = mainFrame
+    statusLabel.TextXAlignment = Enum.TextXAlignment.Center
+    statusLabel.Parent = bottomBlackArea
 
     -- Script listesi
     local scripts = {
@@ -107,19 +128,19 @@ local function createLoader()
     for _, scriptData in ipairs(scripts) do
         local name, code = scriptData[1], scriptData[2]
         local frame = Instance.new("Frame")
-        frame.Size = UDim2.new(1, 0, 0, 40)
+        frame.Size = UDim2.new(1, -10, 0, 40) -- GENİŞLİK AZALTILDI (scrollbar için boşluk)
         frame.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
         frame.BorderSizePixel = 0
         frame.Parent = scrollFrame
 
-        -- Köşe yuvarlama (script butonları)
+        -- Köşe yuvarlatma (script butonları)
         local frameCorner = Instance.new("UICorner")
         frameCorner.CornerRadius = UDim.new(0, 5)
         frameCorner.Parent = frame
 
         -- Script ismi
         local label = Instance.new("TextLabel")
-        label.Size = UDim2.new(0.7, -10, 1, 0)
+        label.Size = UDim2.new(0.65, -10, 1, 0)
         label.Position = UDim2.new(0, 10, 0, 0)
         label.BackgroundTransparency = 1
         label.Text = name
@@ -131,9 +152,8 @@ local function createLoader()
 
         -- Çalıştır butonu
         local executeButton = Instance.new("TextButton")
-        executeButton.Size = UDim2.new(0, 100, 0, 30)
-        executeButton.Position = UDim2.new(1, -110, 0.5, -15)
-        executeButton.AnchorPoint = Vector2.new(0, 0.5)
+        executeButton.Size = UDim2.new(0.3, -10, 0.7, 0)
+        executeButton.Position = UDim2.new(0.7, 5, 0.15, 0)
         executeButton.BackgroundColor3 = Color3.fromRGB(60, 180, 80)
         executeButton.Text = "ÇALIŞTIR"
         executeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -141,7 +161,7 @@ local function createLoader()
         executeButton.Font = Enum.Font.GothamBold
         executeButton.Parent = frame
 
-        -- Köşe yuvarlama (çalıştır butonu)
+        -- Köşe yuvarlatma (çalıştır butonu)
         local buttonCorner = Instance.new("UICorner")
         buttonCorner.CornerRadius = UDim.new(0, 5)
         buttonCorner.Parent = executeButton
@@ -196,6 +216,14 @@ local function createLoader()
         if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
             update(input)
         end
+    end)
+
+    -- Minimize butonu
+    minimizeButton.MouseButton1Click:Connect(function()
+        scrollFrame.Visible = not scrollFrame.Visible
+        statusLabel.Visible = not statusLabel.Visible
+        bottomBlackArea.Visible = not bottomBlackArea.Visible
+        mainFrame.Size = scrollFrame.Visible and UDim2.new(0, 400, 0, 500) or UDim2.new(0, 400, 0, 40)
     end)
 
     -- Kapatma butonu
