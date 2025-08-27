@@ -1,9 +1,9 @@
 local TealaxLoader = {}
 
--- GUI oluşturma
+-- GUI oluşturma (CoreGui'ye ekle, böylece ölünce kapanmaz)
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "TealaxLoader"
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.Parent = game:GetService("CoreGui")
 screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 local mainFrame = Instance.new("Frame")
@@ -37,7 +37,7 @@ title.Font = Enum.Font.GothamBold
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.Parent = titleBar
 
--- Pencere kontrol butonları (Düzeltilmiş konumlar)
+-- Pencere kontrol butonları
 local minimizeButton = Instance.new("TextButton")
 minimizeButton.Size = UDim2.new(0, 30, 0, 30)
 minimizeButton.Position = UDim2.new(1, -60, 0, 0)
@@ -140,22 +140,29 @@ for i, scriptData in ipairs(scripts) do
     buttonCorner.Parent = executeButton
     
     executeButton.MouseButton1Click:Connect(function()
+        -- Butonu devre dışı bırak ve "ÇALIŞTI" yaz
+        executeButton.Text = "ÇALIŞTI"
+        executeButton.BackgroundColor3 = Color3.fromRGB(80, 120, 200)
+        executeButton.AutoButtonColor = false
+        executeButton.Active = false
+        
+        -- Scripti çalıştır
         local success, err = pcall(function()
             loadstring(code)()
         end)
         
-        if success then
-            executeButton.Text = "ÇALIŞTI"
-            executeButton.BackgroundColor3 = Color3.fromRGB(80, 120, 200)
-        else
+        if not success then
             executeButton.Text = "HATA"
             executeButton.BackgroundColor3 = Color3.fromRGB(200, 80, 80)
             warn("Script yüklenirken hata: " .. name .. " - " .. err)
         end
         
-        wait(1.5)
+        -- 2.5 saniye bekle ve butonu eski haline getir
+        wait(2.5)
         executeButton.Text = "ÇALIŞTIR"
         executeButton.BackgroundColor3 = Color3.fromRGB(60, 180, 80)
+        executeButton.AutoButtonColor = true
+        executeButton.Active = true
     end)
 end
 
