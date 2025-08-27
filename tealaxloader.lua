@@ -56,13 +56,13 @@ local function createLoader()
     minimizeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
     minimizeButton.BorderSizePixel = 0
     minimizeButton.Text = "_"
-    minimizeButton.TextColor极速3.fromRGB(255, 255, 255)
+    minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
     minimizeButton.TextSize = 16
     minimizeButton.Font = Enum.Font.GothamBold
     minimizeButton.Parent = titleBar
 
     local closeButton = Instance.new("TextButton")
-    closeButton.Size = UDim2.new(0, 30, 极速, 30)
+    closeButton.Size = UDim2.new(0, 30, 0, 30)
     closeButton.Position = UDim2.new(1, -30, 0, 0)
     closeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
     closeButton.BorderSizePixel = 0
@@ -105,7 +105,7 @@ local function createLoader()
         {"Soluna GUI", "loadstring(game:HttpGet('https://soluna-script.vercel.app/main.lua', true))()"},
         {"Murder Mystery 2 (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/murder-mystery-2.lua', true))()"},
         {"Murder Mystery 2 (XHub)", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CycleScripts/Official/refs/heads/main/freemium'))()"},
-        {"Brookhaven RP (Soluna)", "loadstring(game:HttpGet('极速soluna-script.vercel.app/brookhaven.lua', true))()"},
+        {"Brookhaven RP (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/brookhaven.lua', true))()"},
         {"Big Paintball 2 (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/big-paintball-2.lua', true))()"},
         {"Murderers vs Sheriffs Duels (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/murderers-vs-sheriffs-duels.lua', true))()"},
         {"Bladeball (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/bladeball.lua', true))()"},
@@ -123,7 +123,7 @@ local function createLoader()
         frame.Parent = scrollFrame
         
         local frameCorner = Instance.new("UICorner")
-        frame极速.CornerRadius = UDim.new(0, 5)
+        frameCorner.CornerRadius = UDim.new(0, 5)
         frameCorner.Parent = frame
         
         local label = Instance.new("TextLabel")
@@ -153,13 +153,11 @@ local function createLoader()
         buttonCorner.Parent = executeButton
         
         executeButton.MouseButton1Click:Connect(function()
-            -- Butonu devre dışı bırak ve "ÇALIŞTI" yaz
             executeButton.Text = "ÇALIŞTI"
             executeButton.BackgroundColor3 = Color3.fromRGB(80, 120, 200)
             executeButton.AutoButtonColor = false
             executeButton.Active = false
             
-            -- Scripti çalıştır
             local success, err = pcall(function()
                 loadstring(code)()
             end)
@@ -170,7 +168,6 @@ local function createLoader()
                 warn("Script yüklenirken hata: " .. name .. " - " .. err)
             end
             
-            -- 2.5 saniye bekle ve butonu eski haline getir
             task.wait(2.5)
             executeButton.Text = "ÇALIŞTIR"
             executeButton.BackgroundColor3 = Color3.fromRGB(60, 180, 80)
@@ -191,10 +188,10 @@ local function createLoader()
     end
 
     titleBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.Mouse极速1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = true
             dragStart = input.Position
-            start极速 = mainFrame.Position
+            startPos = mainFrame.Position
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     dragging = false
@@ -215,7 +212,7 @@ local function createLoader()
         end
     end)
 
-    minimizeButton.MouseButton1Click:极速(function()
+    minimizeButton.MouseButton1Click:Connect(function()
         scrollFrame.Visible = not scrollFrame.Visible
         statusLabel.Visible = not statusLabel.Visible
         if scrollFrame.Visible then
@@ -225,20 +222,16 @@ local function createLoader()
         end
     end)
 
-    -- X butonuna basınca tamamen kapat
     closeButton.MouseButton1Click:Connect(function()
         loaderClosed = true
         screenGui:Destroy()
     end)
 
-    -- Klavye kısayolları (NumLock)
     local uis = game:GetService("UserInputService")
     local isVisible = true
 
     uis.InputBegan:Connect(function(input, processed)
         if processed then return end
-        
-        -- NumLock tuşu ile açma/kapama
         if input.KeyCode == Enum.KeyCode.NumLock then
             isVisible = not isVisible
             mainFrame.Visible = isVisible
@@ -255,19 +248,16 @@ local loaderGui = createLoader()
 local player = game:GetService("Players").LocalPlayer
 
 player.CharacterAdded:Connect(function()
-    -- Karakter değiştiğinde loader'ı kontrol et ve yeniden oluştur
     if not loaderClosed then
-        task.wait(1) -- Bekleme süresi
+        task.wait(1)
         if not loaderGui or not loaderGui.Parent then
             loaderGui = createLoader()
         end
     end
 end)
 
--- Sürekli kontrol mekanizması
 task.spawn(function()
     while task.wait(5) do
-        -- Her 5 saniyede bir loader'ın hala var olduğundan emin ol
         if not loaderClosed and (not loaderGui or not loaderGui.Parent) then
             loaderGui = createLoader()
         end
