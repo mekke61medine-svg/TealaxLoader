@@ -101,11 +101,11 @@ local function createLoader()
         {"The Strongle Battlegrounds", "loadstring(game:HttpGet('https://raw.githubusercontent.com/BaconBossScript/TSB/main/TSB'))()"},
         {"Soluna GUI", "loadstring(game:HttpGet('https://soluna-script.vercel.app/main.lua', true))()"},
         {"Murder Mystery 2 (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/murder-mystery-2.lua', true))()"},
-        {"Murder Mystery 2 (XHub)", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CycleScripts/Official/refs/heads/main/freemium'))()"},
+        {"Murder Mystery 2 (XHub)", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CycleScripts/Official/refs/heads/main/freemium'))()'},
         {"Brookhaven RP (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/brookhaven.lua', true))()"},
         {"Big Paintball 2 (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/big-paintball-2.lua', true))()"},
         {"Murderers vs Sheriffs Duels (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/murderers-vs-sheriffs-duels.lua', true))()"},
-        {"Bladeball (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/bladeball.lua', true))()"},
+        {"Bladeball (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/bladeball.lua', true))()'},
         {"Flee the Facility (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/flee-the-facility.lua', true))()"}
     }
 
@@ -200,7 +200,7 @@ local function createLoader()
     end)
 
     titleBar.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
+        if input.UserUserInputType == Enum.UserInputType.MouseMovement then
             dragInput = input
         end
     end)
@@ -221,8 +221,10 @@ local function createLoader()
         end
     end)
 
+    -- X butonuna basınca tamamen kapat
     closeButton.MouseButton1Click:Connect(function()
         screenGui:Destroy()
+        TealaxLoader.Closed = true -- Loader'ın kapandığını işaretle
     end)
 
     -- Klavye kısayolları (NumLock)
@@ -250,9 +252,11 @@ local player = game:GetService("Players").LocalPlayer
 
 player.CharacterAdded:Connect(function()
     -- Karakter değiştiğinde loader'ı kontrol et ve yeniden oluştur
-    task.wait(1) -- Bekleme süresi
-    if not loaderGui or not loaderGui.Parent then
-        loaderGui = createLoader()
+    if not TealaxLoader.Closed then -- Sadece kapatılmadıysa yeniden oluştur
+        task.wait(1) -- Bekleme süresi
+        if not loaderGui or not loaderGui.Parent then
+            loaderGui = createLoader()
+        end
     end
 end)
 
@@ -260,7 +264,7 @@ end)
 task.spawn(function()
     while task.wait(5) do
         -- Her 5 saniyede bir loader'ın hala var olduğundan emin ol
-        if not loaderGui or not loaderGui.Parent then
+        if not TealaxLoader.Closed and (not loaderGui or not loaderGui.Parent) then
             loaderGui = createLoader()
         end
     end
