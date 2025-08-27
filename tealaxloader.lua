@@ -9,7 +9,7 @@ screenGui.ResetOnSpawn = false -- Bu satır önemli: reset'te kapanmasın
 
 local mainFrame = Instance.new("Frame")
 mainFrame.Size = UDim2.new(0, 400, 0, 500)
-mainGui.Position = UDim2.new(0.5, -200, 0.5, -250)
+mainFrame.Position = UDim2.new(0.5, -200, 0.5, -250) -- Burada düzeltme yapıldı (mainGui yerine mainFrame)
 mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 mainFrame.BorderSizePixel = 0
