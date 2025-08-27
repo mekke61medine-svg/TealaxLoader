@@ -245,3 +245,4 @@ end
 -- Loader'ı oluştur
 local loaderGui = createLoader()
 
+
