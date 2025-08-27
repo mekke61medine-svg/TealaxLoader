@@ -89,7 +89,7 @@ local function createLoader()
     statusLabel.Position = UDim2.new(0, 10, 1, -5)
     statusLabel.AnchorPoint = Vector2.new(0, 1)
     statusLabel.BackgroundTransparency = 1
-    statusLabel.Text = "F9: Aç/Kapa - Reset Güvenli"
+    statusLabel.Text = "NumLock: Aç/Kapa - Reset Güvenli"
     statusLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
     statusLabel.TextSize = 12
     statusLabel.Font = Enum.Font.Gotham
@@ -225,15 +225,15 @@ local function createLoader()
         screenGui:Destroy()
     end)
 
-    -- Klavye kısayolları (F9)
+    -- Klavye kısayolları (NumLock)
     local uis = game:GetService("UserInputService")
     local isVisible = true
 
     uis.InputBegan:Connect(function(input, processed)
         if processed then return end
         
-        -- F9 tuşu ile açma/kapama
-        if input.KeyCode == Enum.KeyCode.F9 then
+        -- NumLock tuşu ile açma/kapama
+        if input.KeyCode == Enum.KeyCode.NumLock then
             isVisible = not isVisible
             mainFrame.Visible = isVisible
         end
