@@ -112,7 +112,7 @@ local function createLoader()
 
     -- Script listesi
     local scripts = {
-        {"Nameless Admin", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))()'},
+        {"Nameless Admin", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))()'},
         {"The Strongle Battlegrounds", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/BaconBossScript/TSB/main/TSB"))()'},
         {"Soluna GUI", 'loadstring(game:HttpGet("https://soluna-script.vercel.app/main.lua"))()'},
         {"Murder Mystery 2 (Soluna)", 'loadstring(game:HttpGet("https://soluna-script.vercel.app/murder-mystery-2.lua"))()'},
@@ -244,3 +244,4 @@ end
 
 -- Loader'ı oluştur
 local loaderGui = createLoader()
+
