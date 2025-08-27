@@ -1,15 +1,19 @@
 local TealaxLoader = {}
 
--- GUI oluşturma (CoreGui'ye ekle, böylece ölünce kapanmaz)
+-- PlayerScripts'e ekleyerek reset/ölümde kapanmasını engelleme
+local player = game:GetService("Players").LocalPlayer
+local playerScripts = player:WaitForChild("PlayerScripts")
+
+-- GUI oluşturma
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "TealaxLoader"
-screenGui.Parent = game:GetService("CoreGui")
+screenGui.Parent = playerScripts
 screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-screenGui.ResetOnSpawn = false -- Bu satır önemli: reset'te kapanmasın
+screenGui.ResetOnSpawn = false -- Bu önemli
 
 local mainFrame = Instance.new("Frame")
 mainFrame.Size = UDim2.new(0, 400, 0, 500)
-mainFrame.Position = UDim2.new(0.5, -200, 0.5, -250) -- Burada düzeltme yapıldı (mainGui yerine mainFrame)
+mainFrame.Position = UDim2.new(0.5, -200, 0.5, -250)
 mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
 mainFrame.BorderSizePixel = 0
@@ -81,7 +85,7 @@ statusLabel.Size = UDim2.new(1, -20, 0, 20)
 statusLabel.Position = UDim2.new(0, 10, 1, -5)
 statusLabel.AnchorPoint = Vector2.new(0, 1)
 statusLabel.BackgroundTransparency = 1
-statusLabel.Text = "Num Lock: Aç/Kapa"
+statusLabel.Text = "Right Ctrl: Aç/Kapa"
 statusLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 statusLabel.TextSize = 12
 statusLabel.Font = Enum.Font.Gotham
@@ -159,7 +163,7 @@ for i, scriptData in ipairs(scripts) do
         end
         
         -- 2.5 saniye bekle ve butonu eski haline getir
-        wait(2.5)
+        task.wait(2.5)
         executeButton.Text = "ÇALIŞTIR"
         executeButton.BackgroundColor3 = Color3.fromRGB(60, 180, 80)
         executeButton.AutoButtonColor = true
@@ -217,18 +221,27 @@ closeButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
--- Klavye kısayolları (sadece Num Lock)
+-- Klavye kısayolları (Right Ctrl)
 local uis = game:GetService("UserInputService")
-local numLockToggle = false
+local isVisible = true
 
 uis.InputBegan:Connect(function(input, processed)
     if processed then return end
     
-    -- Num Lock tuşu ile açma/kapama
-    if input.KeyCode == Enum.KeyCode.NumLock then
-        numLockToggle = not numLockToggle
-        mainFrame.Visible = numLockToggle
+    -- Right Ctrl tuşu ile açma/kapama
+    if input.KeyCode == Enum.KeyCode.RightControl then
+        isVisible = not isVisible
+        mainFrame.Visible = isVisible
     end
 end)
+
+-- Player resetlendiğinde GUI'yi yeniden oluştur
+local function onCharacterAdded(character)
+    -- GUI zaten PlayerScripts'te olduğu için otomatik olarak kalacak
+    -- Sadece görünürlüğü ayarla
+    mainFrame.Visible = isVisible
+end
+
+player.CharacterAdded:Connect(onCharacterAdded)
 
 return TealaxLoader
