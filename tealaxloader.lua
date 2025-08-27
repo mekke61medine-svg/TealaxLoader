@@ -78,20 +78,21 @@ local uiListLayout = Instance.new("UIListLayout")
 uiListLayout.Padding = UDim.new(0, 5)
 uiListLayout.Parent = scrollFrame
 
--- Durum bilgisi
+-- Durum bilgisi (en alta taşındı)
 local statusLabel = Instance.new("TextLabel")
 statusLabel.Size = UDim2.new(1, -20, 0, 20)
-statusLabel.Position = UDim2.new(0, 10, 1, -30)
+statusLabel.Position = UDim2.new(0, 10, 1, -5)
 statusLabel.AnchorPoint = Vector2.new(0, 1)
 statusLabel.BackgroundTransparency = 1
-statusLabel.Text = "Num Lock: Aç/Kapa | F2: Gizle/Göster"
+statusLabel.Text = "Num Lock: Aç/Kapa"
 statusLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 statusLabel.TextSize = 12
 statusLabel.Font = Enum.Font.Gotham
 statusLabel.Parent = mainFrame
 
--- Script listesi
+-- Script listesi (Nameless Admin eklendi)
 local scripts = {
+    {"Nameless Admin", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))()'},
     {"The Strongle Battlegrounds", "loadstring(game:HttpGet('https://raw.githubusercontent.com/BaconBossScript/TSB/main/TSB'))()"},
     {"Soluna GUI", "loadstring(game:HttpGet('https://soluna-script.vercel.app/main.lua', true))()"},
     {"Murder Mystery 2 (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/murder-mystery-2.lua', true))()"},
@@ -241,6 +242,7 @@ end)
 
 minimizeButton.MouseButton1Click:Connect(function()
     scrollFrame.Visible = not scrollFrame.Visible
+    statusLabel.Visible = not statusLabel.Visible
     if scrollFrame.Visible then
         mainFrame.Size = UDim2.new(0, 400, 0, 500)
     else
@@ -252,7 +254,7 @@ closeButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
--- Klavye kısayolları
+-- Klavye kısayolları (sadece Num Lock)
 local uis = game:GetService("UserInputService")
 local numLockToggle = false
 
@@ -263,11 +265,6 @@ uis.InputBegan:Connect(function(input, processed)
     if input.KeyCode == Enum.KeyCode.NumLock then
         numLockToggle = not numLockToggle
         mainFrame.Visible = numLockToggle
-    end
-    
-    -- F2 tuşu ile gizleme/gösterme
-    if input.KeyCode == Enum.KeyCode.F2 then
-        mainFrame.Visible = not mainFrame.Visible
     end
 end)
 
