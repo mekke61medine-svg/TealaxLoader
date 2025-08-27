@@ -43,7 +43,7 @@ local function createLoader()
     title.Position = UDim2.new(0, 10, 0, 0)
     title.BackgroundTransparency = 1
     title.Text = "TEALAX SCRIPT LOADER"
-    title.TextColor极速3.fromRGB(255, 255, 255)
+    title.TextColor3 = Color3.fromRGB(255, 255, 255)
     title.TextSize = 14
     title.Font = Enum.Font.GothamBold
     title.TextXAlignment = Enum.TextXAlignment.Left
@@ -63,7 +63,7 @@ local function createLoader()
 
     local closeButton = Instance.new("TextButton")
     closeButton.Size = UDim2.new(0, 30, 0, 30)
-    closeButton.Position = UDim2.new(1, -30, 0, 极速)
+    closeButton.Position = UDim2.new(1, -30, 0, 0)
     closeButton.BackgroundColor3 = Color3.fromRGB(25, 25, 35)
     closeButton.BorderSizePixel = 0
     closeButton.Text = "X"
@@ -89,9 +89,9 @@ local function createLoader()
     -- Durum bilgisi
     local statusLabel = Instance.new("TextLabel")
     statusLabel.Size = UDim2.new(1, -20, 0, 20)
-    statusLabel.Position = UDim2.new(0, 10, 1, -5)
+    statusLabel.Position = UDim2.new(0, 10, 1, -25)
     statusLabel.AnchorPoint = Vector2.new(0, 1)
-    status极速.BackgroundTransparency = 1
+    statusLabel.BackgroundTransparency = 1
     statusLabel.Text = "NumLock: Aç/Kapa - Reset Güvenli"
     statusLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
     statusLabel.TextSize = 12
@@ -103,7 +103,7 @@ local function createLoader()
         {"Nameless Admin", 'loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))()'},
         {"The Strongle Battlegrounds", "loadstring(game:HttpGet('https://raw.githubusercontent.com/BaconBossScript/TSB/main/TSB'))()"},
         {"Soluna GUI", "loadstring(game:HttpGet('https://soluna-script.vercel.app/main.lua', true))()"},
-        {"Murder Mystery 2 (Soluna)", "极速(game:HttpGet('https://soluna-script.vercel.app/murder-mystery-2.lua', true))()"},
+        {"Murder Mystery 2 (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/murder-mystery-2.lua', true))()"},
         {"Murder Mystery 2 (XHub)", "loadstring(game:HttpGet('https://raw.githubusercontent.com/CycleScripts/Official/refs/heads/main/freemium'))()"},
         {"Brookhaven RP (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/brookhaven.lua', true))()"},
         {"Big Paintball 2 (Soluna)", "loadstring(game:HttpGet('https://soluna-script.vercel.app/big-paintball-2.lua', true))()"},
@@ -140,6 +140,7 @@ local function createLoader()
         local executeButton = Instance.new("TextButton")
         executeButton.Size = UDim2.new(0.3, -10, 0, 30)
         executeButton.Position = UDim2.new(0.7, 5, 0.5, -15)
+        executeButton.AnchorPoint = Vector2.new(0, 0.5)
         executeButton.BackgroundColor3 = Color3.fromRGB(60, 180, 80)
         executeButton.Text = "ÇALIŞTIR"
         executeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -155,7 +156,7 @@ local function createLoader()
             -- Butonu devre dışı bırak ve "ÇALIŞTI" yaz
             executeButton.Text = "ÇALIŞTI"
             executeButton.BackgroundColor3 = Color3.fromRGB(80, 120, 200)
-            executeButton.AutoButton极速 = false
+            executeButton.AutoButtonColor = false
             executeButton.Active = false
             
             -- Scripti çalıştır
